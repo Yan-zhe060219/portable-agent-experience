@@ -1,6 +1,6 @@
 # Portable Agent Experience Kit
 
-Portable Agent Experience Kit is a public, installable `experience-distiller` Skill. It helps an Agent turn a completed success into a privacy-reviewed candidate and then recommend the right reusable asset type.
+Portable Agent Experience Kit is a public, installable `experience-distiller` Skill. `skills/experience-distiller/` is the sole installable object in this repository; the adapters are documentation only. It helps an Agent turn a completed success into a privacy-reviewed candidate and then recommend the right reusable asset type.
 
 It is not an Agent Memory product, MCP server, plugin, vector database, or hosted service. The Skill is reusable across compatible Agents; your real experience library remains a separate private Git repository.
 
