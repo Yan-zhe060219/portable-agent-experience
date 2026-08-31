@@ -36,6 +36,8 @@ SECTIONS = (
     "## Sanitization notes",
 )
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9-]*$")
+WINDOWS_ABSOLUTE_PATH_PATTERN = re.compile(r"\b[A-Za-z]:\\")
+API_KEY_ASSIGNMENT_PATTERN = re.compile(r"\bapi[_-]?key\s*=", re.IGNORECASE)
 
 
 def _parse_value(value: str) -> object:
@@ -96,6 +98,10 @@ def validate_file(path: Path) -> list[str]:
         return [f"cannot read file: {error}"]
 
     fields, body, errors = _parse_card(text)
+    if WINDOWS_ABSOLUTE_PATH_PATTERN.search(text):
+        errors.append("possible public privacy issue: absolute path")
+    if API_KEY_ASSIGNMENT_PATTERN.search(text):
+        errors.append("possible public privacy issue: api_key assignment")
     for key in sorted(REQUIRED_KEYS - fields.keys()):
         errors.append(f"missing required key: {key}")
 
