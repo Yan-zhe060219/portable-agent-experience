@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 SCRIPTS = Path(__file__).parents[1] / "skills" / "experience-distiller" / "scripts"
@@ -26,3 +27,10 @@ class ValidateLibraryTests(unittest.TestCase):
     def test_rejects_missing_required_section(self):
         errors = validate_file(FIXTURES / "invalid" / "missing-section.md")
         self.assertIn("missing section: ## Risks and rollback", errors)
+
+    def test_rejects_non_utf8_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "non-utf8.md"
+            path.write_bytes(b"\xff")
+
+            self.assertEqual(["file is not valid UTF-8"], validate_file(path))
